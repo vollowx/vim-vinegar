@@ -54,8 +54,9 @@ function! s:opendir(cmd) abort
   elseif expand('%') =~# '^$\|^term:[\/][\/]'
     execute a:cmd '.'
   else
+    let currentFilename = expand('%:t')
     execute a:cmd '%:h' . (expand('%:p') =~# '^\a\a\+:' ? s:slash() : '')
-    call s:seek(expand('#:t'))
+    call s:seek(currentFilename)
   endif
 endfunction
 
