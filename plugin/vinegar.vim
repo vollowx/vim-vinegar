@@ -89,6 +89,12 @@ function! s:absolutes(first, ...) abort
   let files = getline(a:first, a:0 ? a:1 : a:first)
   call filter(files, 'v:val !~# "^\" "')
   call map(files, "substitute(v:val, '^\\(| \\)*', '', '')")
+  if get(b:, 'netrw_liststyle') == 1
+    call map(files, "substitute(v:val, '  .*', '', '')")
+  elseif get(b:, 'netrw_liststyle') == 2
+    call map(files, "substitute(v:val, '^.\\{," . col('.') . "\\}  ', '', '')")
+    call map(files, "substitute(v:val, '  .*', '', '')")
+  endif
   call map(files, 'b:netrw_curdir . s:slash() . substitute(v:val, "[/*|@=]\\=\\%(\\t.*\\)\\=$", "", "")')
   return files
 endfunction
